@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block title %}{{title}}{% endblock  %}
+{% block main %}
+<main>
+    <div class="container">
+        <h2 class="fs-2 my-2">Главная</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="border rounded mb-3">
+                    {% if today %}
+                    <div class="rounded-top d-flex justify-content-between px-3 py-1 mt-3">
+                        <a href="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                            </svg>
+                        </a>
+                        <p class="text-center fs-4">{{today.day}}</p>
+                        <a href="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="p-3">
+                        <table class="table table-dark rounded table-striped bg-dark table-hover">
+                            <thead>
+                                <th>Предмет</th>
+                                <th>Тема урока</th>
+                                <th>Домашнее задание</th>
+                                <th>Оценка</th>
+                            </thead>
+                            {% for lesson in today.lessons %}
+                                <tr>
+                                    <td>{{lesson.subject}}</td>
+                                    <td>{{lesson.topic}}</td>
+                                    <td>{% if lesson.homework %}{{lesson.homework}}{% endif %}</td>
+                                    <td>
+                                        {% for mark in lesson.marksRaw %}
+                                            <p class="badge 
+                                                {% if mark == '5' %}
+                                                bg-success
+                                                {% elif mark == '4' %}
+                                                bg-primary
+                                                {% elif mark == '3' %}
+                                                bg-warning
+                                                {% elif mark == '2' %}
+                                                bg-danger
+                                                {% elif mark == '1' %}
+                                                bg-dark
+                                                {% else %}
+                                                bg-secondary
+                                                {% endif %}
+                                            ">{{mark}}</p>
+                                        {% endfor %}
+                                        <p class="text-secondary">{% if lesson.gradeType %}{{lesson.gradeType}}{% endif %}</p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        {% else %}
+                        Сегодня уроков нет            
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="border rounded p-3">
+                    <h2 class="fs-4">Последние оценки</h2>
+                    <hr>
+                    <p class="badge fs-1 bg-success">5</p>
+                    <p class="badge fs-1 bg-primary">4</p>
+                    <p class="badge fs-1 bg-warning">3</p>
+                    <p class="badge fs-1 bg-danger">2</p>
+                    <p class="badge fs-1 bg-dark">1</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="border rounded p-3">
+                    <h2 class="fs-4">Таблица рейтингов</h2>
+                    <hr>
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th>Место</th>
+                                <th>Имя Фамилия</th>
+                                <th>Кол-во очков</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Имя Фамилия</td>
+                                <td>100000</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Имя Фамилия</td>
+                                <td>100000</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Имя Фамилия</td>
+                                <td>100000</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Имя Фамилия</td>
+                                <td>100000</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Имя Фамилия</td>
+                                <td>100000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="border rounded p-3 my-2">
+                    <h2 class="fs-4">Твои награды</h2>
+                    <hr>
+                    <div class="d-flex flex-wrap">
+                        <div class="w-25">
+                            <img width="100%" src="https://benza.ru/upload/medialibrary/5ff/золотая%20медаль.png" alt="">
+                            <p class="text-center fs-5">Молодец</p>
+                        </div>
+                        <div class="w-25">
+                            <img width="100%" src="https://benza.ru/upload/medialibrary/5ff/золотая%20медаль.png" alt="">
+                            <p class="text-center fs-5">Молодец</p>
+                        </div>
+                        <div class="w-25">
+                            <img width="100%" src="https://benza.ru/upload/medialibrary/5ff/золотая%20медаль.png" alt="">
+                            <p class="text-center fs-5">Молодец</p>
+                        </div>
+                        <div class="w-25">
+                            <img width="100%" src="https://benza.ru/upload/medialibrary/5ff/золотая%20медаль.png" alt="">
+                            <p class="text-center fs-5">Молодец</p>
+                        </div>
+                        <div class="w-25">
+                            <img width="100%" src="https://benza.ru/upload/medialibrary/5ff/золотая%20медаль.png" alt="">
+                            <p class="text-center fs-5">Молодец</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock  %}

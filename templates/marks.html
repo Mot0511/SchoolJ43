@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}{{title}}{% endblock  %}
+{% block head %}
+<style>
+    @media screen and (max-width: 770px){
+        .marks{
+            font-size: 13px;
+        }
+    }
+</style>
+{% endblock head %}
+{% block main %}
+<main>
+    <div class="container">
+        <h2 class="fs-2 my-2">Оценки</h2>
+        <select class="form-select form-select-dark my-3" onchange="if (this.value) window.location.href = this.value">
+            <option value="/marks/1" {% if period.name == 'Первая четверть' %}selected{% endif %}>Первая четверть</option>
+            <option value="/marks/2" {% if period.name == 'Вторая четверть' %}selected{% endif %}>Вторая четверть</option>
+            <option value="/marks/3" {% if period.name == 'Третья четверть' %}selected{% endif %}>Третья четверть</option>
+            <option value="/marks/4" {% if period.name == 'Четвертая четверть' %}selected{% endif %}>Четвертая четверть</option>
+        </select>
+        <table class="table table-dark table-striped table-bordered table-hover marks">
+            <thead>
+                <tr>
+                    <th scope="col">Предмет</th>
+                    <th scope="col">Оценки</th>
+                    <th scope="col">Средний балл</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in marks %}
+                    <tr>
+                        <td>{{row.name}}</td>
+                        <td>
+                            {% for mark in row.marks %}
+                                <p class="badge 
+                                {% if mark == '5' %}
+                                bg-success
+                                {% elif mark == '4' %}
+                                bg-primary
+                                {% elif mark == '3' %}
+                                bg-warning
+                                {% elif mark == '2' %}
+                                bg-danger
+                                {% elif mark == '1' %}
+                                bg-dark
+                                {% else %}
+                                bg-secondary
+                                {% endif %}
+                                
+                                ">{{mark}}</p>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <p class="badge 
+                            {% if row.gpa >= '4.49' %}
+                                bg-success
+                            {% elif row.gpa >= '3.50' %}
+                                bg-primary
+                            {% elif row.gpa >= '2.50' %}
+                                bg-warning
+                            {% elif row.gpa >= '1.50' %}
+                                bg-danger
+                            {% elif row.gpa >= '0.50' %}
+                                bg-dark
+                            {% else %}
+                                bg-secondary
+                            {% endif %}
+                            ">
+                            {{row.gpa}}
+                            </p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            
+        </table>
+    </div>
+</main>
+{% endblock  %}
