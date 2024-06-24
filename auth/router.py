@@ -6,6 +6,7 @@ from db.engine import get_async_session
 from db.models import Session
 from page_router import index
 from sqlalchemy.ext.asyncio import AsyncSession
+from datetime import datetime, timedelta, timezone
 
 auth_router = APIRouter()
 
@@ -28,6 +29,6 @@ async def auth_endpoint(request: Request, email: str = Form(...), password: str 
         )
         db_session.add(session_model)
         await db_session.commit()
-        response.set_cookie(key='guid', value=guid)
+        response.set_cookie(key='guid', value=guid, expires=datetime.now(timezone.utc) + timedelta(days=365))
 
     return response

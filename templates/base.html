@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Электронный дневник - {% block title %}{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>    
     <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}" />
     {% block head %}{% endblock head %}
 </head>
@@ -13,10 +13,10 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg">
             <a href="/" class="navbar-brand fs-3">Электронный дневник <span class="text-secondary fs-5">{{name}}</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="navbar-item">
                         <a href="/home" class="nav-link fs-4 {% if title == 'Главная' %}active{% endif %}">Главная</a>
@@ -38,11 +38,10 @@
     {% endblock scripts %}
 
     <script>
-        const navLinks = document.querySelectorAll('.nav-item');
-const menuToggle = document.getElementById('navbarNav');
-navLinks.forEach((l) => {
-    l.addEventListener('click', () => { menuToggle.classList.toggle('show') })
-});
+        if (window.innerWidth > 991){
+            document.getElementById('navbarNav').classList.add('d-flex')
+            document.getElementById('navbarNav').classList.add('justify-content-end')
+        }
     </script>
 </body>
 </html>
