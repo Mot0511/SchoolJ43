@@ -23,7 +23,7 @@ def get_marks(session: requests.Session, guid: str, begin: str = None, end: str 
     else:
         url = "https://one.43edu.ru/edv/index/report/marks/" + guid
         data = {"begin": begin, "end": end, "format": "xls"}
-    response = session.get(url, params=data)
+    response = session.get(url, params=data, verify=False)
     workbook = xlrd.open_workbook(file_contents=response.content, ignore_workbook_corruption=True)
     df = pd.read_excel(workbook)
     csv_data = df.to_csv(index=False)

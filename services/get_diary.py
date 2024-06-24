@@ -17,7 +17,7 @@ def get_diary(session: requests.Session, guid: str, date: str,
          также данные об учебных периодах
     """
     
-    response = session.get("https://one.43edu.ru/edv/index/diary/" + guid, params={'date': date})
+    response = session.get("https://one.43edu.ru/edv/index/diary/" + guid, params={'date': date}, verify=False)
     json = response.json()
 
     if json["success"]:

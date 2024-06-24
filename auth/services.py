@@ -19,7 +19,7 @@ def auth(login: str, password: str) -> Optional[requests.Session]:
 
     url = 'https://passport.43edu.ru/auth/login'
     data = {'login': login, 'password': password, "submit": "submit", "returnTo": "https://one.43edu.ru"}
-    session.post(url, data=data)
+    session.post(url, data=data, verify=False)
 
     return session
 
@@ -30,7 +30,7 @@ def get_guid(session: requests.Session) -> str:  # dict
     :param session: Сессия пользователя
     :return: dict: {name: guid}
     """
-    response = session.get("https://one.43edu.ru/edv/index/participant/")
+    response = session.get("https://one.43edu.ru/edv/index/participant/", verify=False)
     soup = BeautifulSoup(response.text, 'lxml')
 
     one_participant = soup.find("div", {"class": "one-participant"})
