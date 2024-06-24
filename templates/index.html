@@ -1,28 +1,43 @@
 {% extends "base.html" %}
-{% block title %}{{title}}{% endblock  %}
+{% block title %}{{title}}{% endblock %}
+{% block head %}
+<style>
+    .mark{
+        font-size: 14px;
+    }
+    @media screen and (max-width: 770px){
+        .mark{
+            font-size: 10px;
+        }
+        .lessons{
+            font-size: 9px;
+        }
+        
+    }
+    @media screen and (max-width: 378px){
+        .lessons{
+            font-size: 7px;
+        }
+        .mark{
+            font-size: 8px;
+        }
+    }
+</style>
+{% endblock head %}
 {% block main %}
 <main>
     <div class="container">
         <h2 class="fs-2 my-2">Главная</h2>
         <div class="row">
             <div class="col-md-6">
-                <div class="border rounded mb-3">
-                    {% if today %}
-                    <div class="rounded-top d-flex justify-content-between px-3 py-1 mt-3">
-                        <a href="">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-                            </svg>
-                        </a>
-                        <p class="text-center fs-4">{{today.day}}</p>
-                        <a href="">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                            </svg>
-                        </a>
-                    </div>
-                    <div class="p-3">
-                        <table class="table table-dark rounded table-striped bg-dark table-hover">
+                <div class="border rounded mb-3 p-3">
+                    <p class="fs-4">{% if today %}
+                    {{today.day}}
+                    {% else %}
+                    Сегодня уроков нет
+                    {% endif %}</p>
+                    <div>
+                        <table class="table table-dark rounded table-striped bg-dark table-hover lessons">
                             <thead>
                                 <th>Предмет</th>
                                 <th>Тема урока</th>
@@ -32,11 +47,11 @@
                             {% for lesson in today.lessons %}
                                 <tr>
                                     <td>{{lesson.subject}}</td>
-                                    <td>{{lesson.topic}}</td>
+                                    <td>{% if lesson.homework %}{{lesson.topic}}{% endif %}</td>
                                     <td>{% if lesson.homework %}{{lesson.homework}}{% endif %}</td>
                                     <td>
                                         {% for mark in lesson.marksRaw %}
-                                            <p class="badge 
+                                            <p class="badge mark
                                                 {% if mark == '5' %}
                                                 bg-success
                                                 {% elif mark == '4' %}
@@ -57,19 +72,40 @@
                                 </tr>
                             {% endfor %}
                         </table>
-                        {% else %}
-                        Сегодня уроков нет            
-                        {% endif %}
                     </div>
                 </div>
-                <div class="border rounded p-3">
-                    <h2 class="fs-4">Последние оценки</h2>
+                <div class="border rounded p-3 mb-3">
+                    <h2 class="fs-4">Оценки этой недели: 
+                        <span class="fs-5">
+                            {% if week_marks.count5 %}<span class="text-success">{{week_marks.count5}} пятерок</span>{% endif %}
+                            {% if week_marks.count4 %}<span class="text-primary">{{week_marks.count4}}  четверок</span>{% endif %}
+                            {% if week_marks.count3 %}<span class="text-warning">{{week_marks.count3}}  троек</span>{% endif %}
+                            {% if week_marks.count2 %}<span class="text-danger">{{week_marks.count2}}  двоек</span>{% endif %}
+                            {% if week_marks.count1 %}<span class="text-black">{{week_marks.count1}}  едениц</span>{% endif %}
+                        </span>
+                    </h2>
                     <hr>
-                    <p class="badge fs-1 bg-success">5</p>
-                    <p class="badge fs-1 bg-primary">4</p>
-                    <p class="badge fs-1 bg-warning">3</p>
-                    <p class="badge fs-1 bg-danger">2</p>
-                    <p class="badge fs-1 bg-dark">1</p>
+                    {% if week_marks.marks %}
+                        {% for mark in week_marks.marks %}
+                            <p class="badge fs-1 
+                            {% if mark == '5' %}
+                            bg-success
+                            {% elif mark == '4' %}
+                            bg-primary
+                            {% elif mark == '3' %}
+                            bg-warning
+                            {% elif mark == '2' %}
+                            bg-danger
+                            {% elif mark == '1' %}
+                            bg-dark
+                            {% else %}
+                            bg-secondary
+                            {% endif %}
+                            ">{{mark}}</p>
+                        {% endfor %}
+                    {% else %}
+                        На этой неделе оценок пока нет
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-6">

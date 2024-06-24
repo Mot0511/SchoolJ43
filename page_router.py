@@ -1,3 +1,4 @@
+from calendar import week
 from datetime import date, datetime
 from re import L
 from fastapi import APIRouter, Cookie, Request
@@ -5,8 +6,10 @@ from fastapi.templating import Jinja2Templates
 from auth.utils import get_session
 from services.get_diary import get_diary
 from services.get_marks import get_marks
+from utils.count_of_entry import count_of_entry
 from utils.get_monday_date import get_monday_date
 from utils.get_periods import get_periods
+from utils.get_week_marks import get_week_marks
 
 page_router = APIRouter()
 
@@ -22,7 +25,18 @@ async def index(request: Request, guid: str | None = Cookie(default=None)):
     diary = get_diary(session, guid, date.today())['diary']
     today = (diary[0] if diary else None)
 
-    return templates.TemplateResponse(request=request, name='index.html', context={'title': 'Главная', 'today': today})
+    count_week_marks = get_week_marks(session, guid)
+    week_marks = {
+        'marks': count_week_marks,
+        'count5': count_of_entry(count_week_marks, '5'),
+        'count4': count_of_entry(count_week_marks, '4'),
+        'count3': count_of_entry(count_week_marks, '3'),
+        'count2': count_of_entry(count_week_marks, '2'),
+        'count1': count_of_entry(count_week_marks, '1'),
+    }
+    print(week_marks)
+
+    return templates.TemplateResponse(request=request, name='index.html', context={'title': 'Главная', 'today': today, 'week_marks': week_marks})
 
 @page_router.get('/diary')
 async def diary(request: Request, date: str = get_monday_date(date.today()).strftime('%d.%m.%Y'), guid: str | None = Cookie(default=None)):
