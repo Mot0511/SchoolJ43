@@ -1,5 +1,5 @@
-.venv3
-node_modules3
+.venv
+node_modules
 
 .env
 db.db
