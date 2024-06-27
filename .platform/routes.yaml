@@ -5,4 +5,6 @@ upstream: "app:http"
 
 "https://{default}/":
 type: redirect
-to: "https://www.{default}/"
+to: "https://www.{default}/"git add .
+git commit -m "Add config files."
+git push -u platform main
