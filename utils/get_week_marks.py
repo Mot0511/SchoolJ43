@@ -10,7 +10,7 @@ def get_week_marks(session: Session, guid: str) -> List[int]:
     
     marks = []
 
-    diary = get_diary(session, guid, date.today())['diary']
+    diary = get_diary(session, guid, '01.03.2024')['diary']
     # diary = get_diary(session, guid, get_monday_date(date.today()))['diary']
     for day in diary:
         for lesson in day['lessons']:
