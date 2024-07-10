@@ -4,9 +4,7 @@ import os
 
 from db.models import Base
 
-load_dotenv(find_dotenv())
-
-engine = create_async_engine(os.getenv('DB'))
+engine = create_async_engine('sqlite+aiosqlite:///db.db')
 sessionmaker = async_sessionmaker(bind=engine, expire_on_commit=True, class_=AsyncSession)
 
 async def create_db():
